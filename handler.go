@@ -34,3 +34,16 @@ func (h *AbstractHandler) Next(ctx context.Context, upd tgbotapi.Update) error {
 
 	return h.next.Handle(ctx, upd)
 }
+
+func (h *AbstractHandler) ReplyToMsg(msg *tgbotapi.Message, text string, api ITgAPI) (err error) {
+	if msg == nil || len(text) == 0 {
+		return
+	}
+
+	resp := tgbotapi.NewMessage(msg.Chat.ID, text)
+	resp.ReplyToMessageID = msg.MessageID
+
+	_, err = api.Send(resp)
+
+	return
+}

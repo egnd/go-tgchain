@@ -5,6 +5,8 @@
 [![Coverage](https://gocover.io/_badge/github.com/egnd/go-tgchain)](https://gocover.io/github.com/egnd/go-tgchain)
 [![Pipeline](https://github.com/egnd/go-tgchain/actions/workflows/pipeline.yml/badge.svg)](https://github.com/egnd/go-tgchain/actions?query=workflow%3APipeline)
 
+Chained wrapper for handling tg updates
+
 ### Example
 ```go
 package main

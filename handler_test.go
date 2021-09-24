@@ -2,6 +2,7 @@ package tgchain_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/egnd/go-tgchain"
@@ -26,4 +27,17 @@ func Test_AbstractHandler(t *testing.T) {
 	h.Next(ctx, upd)
 
 	mHandler.AssertExpectations(t)
+
+	api := &mocks.ITgAPI{}
+
+	assert.NoError(t, h.ReplyToMsg(nil, "", api))
+
+	msg := &tgbotapi.Message{Chat: &tgbotapi.Chat{ID: 1}}
+	resp := tgbotapi.NewMessage(msg.Chat.ID, "text")
+	resp.ReplyToMessageID = msg.MessageID
+	api.On("Send", resp).Return(tgbotapi.Message{}, nil).Once()
+	api.On("Send", resp).Return(tgbotapi.Message{}, errors.New("error")).Once()
+
+	assert.NoError(t, h.ReplyToMsg(msg, "text", api))
+	assert.Error(t, h.ReplyToMsg(msg, "text", api))
 }
