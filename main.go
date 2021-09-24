@@ -1,3 +1,4 @@
+// Package tgchain has chained wrapper for handling tg updates
 package tgchain
 
 import (
@@ -14,4 +15,5 @@ type ITgAPI interface {
 	AnswerInlineQuery(tgbotapi.InlineConfig) (tgbotapi.APIResponse, error)
 }
 
-type WarnUpd func(string, *tgbotapi.Update)
+// WarnUpd is a method for loggin warnings about tg update.
+type WarnUpd func(string, tgbotapi.Update)

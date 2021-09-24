@@ -38,7 +38,7 @@ func Test_Listener(t *testing.T) {
 		t.Run(fmt.Sprint(k), func(tt *testing.T) {
 			updChan := make(chan tgbotapi.Update)
 			warnUpd := &mocks.WarnUpd{}
-			warnUpd.On("Execute", "unexpected event", &test.upd).Maybe()
+			warnUpd.On("Execute", "unexpected event", test.upd).Maybe()
 			l := tgchain.NewListener(warnUpd.Execute)
 			l.Add(test.event, test.handlers...)
 			var wd sync.WaitGroup

@@ -6,6 +6,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
+// IListener is a tg updates listener interface.
 type IListener interface {
 	Add(EventType, ...IEventHandler) IListener
 	Listen(context.Context, tgbotapi.UpdatesChannel)
@@ -59,12 +60,13 @@ func (b *Listener) Listen(ctx context.Context, updChan tgbotapi.UpdatesChannel) 
 		event := GetEventFrom(update)
 
 		if item, ok := handlers[event]; ok {
-			item.Handle(context.WithValue(ctx, CtxEventKey, event), update)
+			_ = item.Handle(context.WithValue(ctx, CtxEventKey, event), update) // @TODO: log error
+
 			continue
 		}
 
 		if b.warnUpd != nil {
-			b.warnUpd("unexpected event", &update)
+			b.warnUpd("unexpected event", update)
 		}
 	}
 }

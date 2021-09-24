@@ -12,7 +12,7 @@ type EventType int
 const (
 	// EventUndefined undefined event.
 	EventUndefined EventType = iota
-	// EventDirectMessage receiving message event.
+	// EventMessage receiving message event.
 	EventMessage
 	// EventCommand receiving command event.
 	EventCommand
@@ -22,6 +22,7 @@ const (
 	EventCallbackQuery
 )
 
+// CtxEventKeyType is a type for event name in context.
 type CtxEventKeyType int
 
 const (
@@ -34,7 +35,7 @@ func GetEventFromCtx(ctx context.Context) EventType {
 	return ctx.Value(CtxEventKey).(EventType)
 }
 
-// GetEventFrom return event type from tg update
+// GetEventFrom return event type from tg update.
 func GetEventFrom(upd tgbotapi.Update) EventType {
 	switch {
 	case upd.Message != nil && !upd.Message.IsCommand():

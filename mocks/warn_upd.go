@@ -13,6 +13,6 @@ type WarnUpd struct {
 }
 
 // Execute provides a mock function with given fields: _a0, _a1
-func (_m *WarnUpd) Execute(_a0 string, _a1 *tgbotapi.Update) {
+func (_m *WarnUpd) Execute(_a0 string, _a1 tgbotapi.Update) {
 	_m.Called(_a0, _a1)
 }
