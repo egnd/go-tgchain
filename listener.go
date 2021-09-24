@@ -12,16 +12,20 @@ type IListener interface {
 	Listen(context.Context, tgbotapi.UpdatesChannel)
 }
 
+// @TODO: listener with workers pool
+
 // Listener is struct which is listening and handling events.
 type Listener struct {
 	handlers map[EventType][]IEventHandler
 	warnUpd  WarnUpd
+	errUpd   ErrUpd
 }
 
 // NewListener constructor for Listener struct.
-func NewListener(warnUpd WarnUpd) *Listener {
+func NewListener(warnUpd WarnUpd, errUpd ErrUpd) *Listener {
 	return &Listener{
 		warnUpd:  warnUpd,
+		errUpd:   errUpd,
 		handlers: make(map[EventType][]IEventHandler),
 	}
 }
@@ -56,11 +60,15 @@ func (b *Listener) buildChains() map[EventType]IEventHandler {
 func (b *Listener) Listen(ctx context.Context, updChan tgbotapi.UpdatesChannel) {
 	handlers := b.buildChains()
 
-	for update := range updChan { // @TODO: add workers pool
+	for update := range updChan {
 		event := GetEventFrom(update)
 
 		if item, ok := handlers[event]; ok {
-			_ = item.Handle(context.WithValue(ctx, CtxEventKey, event), update) // @TODO: log error
+			if err := item.Handle(
+				context.WithValue(ctx, CtxEventKey, event), update,
+			); err != nil && b.errUpd != nil {
+				b.errUpd("update", update, err)
+			}
 
 			continue
 		}

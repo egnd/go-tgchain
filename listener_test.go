@@ -2,6 +2,7 @@ package tgchain_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"testing"
@@ -25,7 +26,7 @@ func Test_Listener(t *testing.T) {
 				handler1 := &mocks.IEventHandler{}
 				handler2 := &mocks.IEventHandler{}
 				handler1.On("Decorate", handler2)
-				handler1.On("Handle", mock.Anything, mock.Anything).Return(nil)
+				handler1.On("Handle", mock.Anything, mock.Anything).Return(errors.New("error"))
 				return []tgchain.IEventHandler{handler1, handler2}
 			}(),
 		},
@@ -39,7 +40,9 @@ func Test_Listener(t *testing.T) {
 			updChan := make(chan tgbotapi.Update)
 			warnUpd := &mocks.WarnUpd{}
 			warnUpd.On("Execute", "unexpected event", test.upd).Maybe()
-			l := tgchain.NewListener(warnUpd.Execute)
+			errUpd := &mocks.ErrUpd{}
+			errUpd.On("Execute", "update", test.upd, mock.Anything).Maybe()
+			l := tgchain.NewListener(warnUpd.Execute, errUpd.Execute)
 			l.Add(test.event, test.handlers...)
 			var wd sync.WaitGroup
 			wd.Add(1)

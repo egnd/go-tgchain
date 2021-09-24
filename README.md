@@ -29,7 +29,7 @@ func main() {
 	u.Timeout = 60
 	updates, err := api.GetUpdatesChan(u)
 
-	tgchain.NewListener(nil)
+	tgchain.NewListener(nil, nil)
 		.Add(tgchain.EventMessage, 
 			// @TODO: your handlers, children of IEventHandler
 		)

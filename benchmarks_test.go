@@ -21,7 +21,7 @@ func Benchmark_Listener(b *testing.B) {
 	handler := &mocks.IEventHandler{}
 	handler.On("Handle", mock.Anything, mock.Anything).Return(nil)
 
-	l := tgchain.NewListener(nil)
+	l := tgchain.NewListener(nil, nil)
 	l.Add(tgchain.EventMessage, handler)
 
 	var wd sync.WaitGroup

@@ -15,5 +15,8 @@ type ITgAPI interface {
 	AnswerInlineQuery(tgbotapi.InlineConfig) (tgbotapi.APIResponse, error)
 }
 
-// WarnUpd is a method for loggin warnings about tg update.
+// WarnUpd is a method for logging warnings.
 type WarnUpd func(string, tgbotapi.Update)
+
+// ErrUpd is a method for logging errors.
+type ErrUpd func(string, tgbotapi.Update, error)
