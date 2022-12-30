@@ -5,6 +5,8 @@
 [![Coverage](https://gocover.io/_badge/github.com/egnd/go-tgchain)](https://gocover.io/github.com/egnd/go-tgchain)
 [![Pipeline](https://github.com/egnd/go-tgchain/actions/workflows/pipeline.yml/badge.svg)](https://github.com/egnd/go-tgchain/actions?query=workflow%3APipeline)
 
+DEPRECATED use https://github.com/egnd/go-toolbox/tree/master/tgchain instead
+
 Chained wrapper for handling tg updates
 
 ### Example
